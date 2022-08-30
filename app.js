@@ -96,7 +96,7 @@ function onDoubleClick(event){
         ctx.save();
         ctx.lineWidth=1;
         ctx.font="68px serif";
-        ctx.fillText(text, event.offsetX, event.offsetY );
+        ctx.fillText(text, event.offsetX, event.offsetY);
         ctx.restore();
     }
 }
