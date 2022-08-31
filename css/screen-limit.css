@@ -1,0 +1,23 @@
+#screen-limit {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: white;
+    backdrop-filter: blur(30px);
+  }
+
+#screen-limit span{
+    padding: 20px;
+    border-radius: 25px;
+    background-color: rgb(176, 115, 243);
+   }
+   
+@media screen and (min-width: 1000px) and (min-height: 600px)  {
+    #screen-limit{
+        display: none;
+    }
+}
