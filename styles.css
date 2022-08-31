@@ -29,6 +29,13 @@ body{
     gap:20px;
 }
 
+.btns img{
+    width: 120px;
+    height: 120px;
+    display: block; 
+    margin: 0px auto;
+}
+
 .color-options{
     display: flex;
     flex-direction: column;
@@ -54,6 +61,23 @@ input#color{
     background-color: white;
 }
 
+select{
+    background-color: royalblue;
+    font-weight: 500;
+    color:white;
+    border-color: royalblue;
+    text-align: center;
+}
+
+select option[value=""][disabled] {
+	display: none;
+}
+
+option{
+    background-color: white;
+    color:black;
+}
+
 button,
 label{
     all:unset;
@@ -66,6 +90,10 @@ label{
     border-radius: 10px;
     transition: opacity linear .1s;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+label[id="exp"]{
+cursor:default;
 }
 
 button:hover{

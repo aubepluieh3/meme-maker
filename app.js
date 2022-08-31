@@ -1,12 +1,15 @@
+const font = document.getElementById("font");
 const saveBtn = document.getElementById("save");
 const textInput = document.getElementById("text");
 const fileInput = document.getElementById("file");
 const modeBtn = document.getElementById("mode-btn");
+const fillBtn = document.getElementById("fill-btn");
 const destroyBtn = document.getElementById("destroy-btn");
 const eraserBtn = document.getElementById("eraser-btn");
 const colorOptions = Array.from(document.getElementsByClassName("color-option"));
 const color = document.getElementById("color");
 const lineWidth = document.getElementById("line-width");
+const fontSize = document.getElementById("font-size");
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -18,13 +21,20 @@ canvas.height=CANVAS_HEIGHT;
 ctx.lineWidth = lineWidth.value;
 ctx.lineCap="round";
 let isPainting = false;
+let isShaping = false;
 let isFilling = false;
 
 function onMove(event){
    if(isPainting){
-    ctx.lineTo(event.offsetX, event.offsetY);
-    ctx.stroke();
-    return;
+    if(isShaping){
+        ctx.lineTo(event.offsetX, event.offsetY);
+        ctx.fill();
+        return;
+    }
+        ctx.lineTo(event.offsetX, event.offsetY);
+        ctx.stroke();
+        return;
+    
    }
    ctx.moveTo(event.offsetX, event.offsetY); // 연필을 마우스 있는 쪽으로 움직
 }
@@ -40,6 +50,10 @@ function onLineWidthChange(event){
     ctx.lineWidth = event.target.value;
 }
 
+function onFontSizeChange(event){
+    ctx.fontSize = event.target.value;
+}
+
 function onColorChange(event){
     ctx.strokeStyle = event.target.value;
     ctx.fillStyle = event.target.value;
@@ -53,18 +67,19 @@ function onColorClick(event){
 }
 
 function onModeClick(){
-    if(isFilling){
-        isFilling = false;
-        modeBtn.innerText = "Fill";
+    isFilling=false;
+    if(isShaping){
+        isShaping = false;
+        modeBtn.innerText = "⬜ Shape";
     }else {
-        isFilling = true;
-        modeBtn.innerText = "Draw";
+        isShaping = true;
+        modeBtn.innerText = "🖌 Draw";
     }
 }
 
 function onCanvasClick(){
     if(isFilling){
-        ctx.fillRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
+        ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     }
 }
 
@@ -76,7 +91,13 @@ function onDestroyClick(){
 function onEraserClick(){
     ctx.strokeStyle="white";
     isFilling = false;
-    modeBtn.innerText="Fill";
+    modeBtn.innerText="⬜ Shape";
+}
+
+function onFillClick(){
+    if(!isFilling){
+        isFilling = true;
+    }
 }
 
 function onFileChange(event){
@@ -95,9 +116,12 @@ function onDoubleClick(event){
     if(text !== ""){
         ctx.save();
         ctx.lineWidth=1;
-        ctx.font="68px serif";
-        ctx.fillText(text, event.offsetX, event.offsetY);
+        ctx.font= `${fontSize.value}px ${font.value}`;
+        ctx.fillText(text,event.offsetX,event.offsetY);
         ctx.restore();
+    }
+    else{
+        isPainting = true;
     }
 }
 
@@ -119,10 +143,12 @@ canvas.addEventListener("click", onCanvasClick);
 
 
 lineWidth.addEventListener("change", onLineWidthChange);
+fontSize.addEventListener("change", onFontSizeChange);
 color.addEventListener("change", onColorChange);
 
-colorOptions.forEach(color => color.addEventListener("click", onColorClick));
+colorOptions.forEach((color) => color.addEventListener("click", onColorClick));
 
+fillBtn.addEventListener("click", onFillClick);
 modeBtn.addEventListener("click", onModeClick);
 destroyBtn.addEventListener("click", onDestroyClick);
 eraserBtn.addEventListener("click", onEraserClick);
