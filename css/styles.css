@@ -36,6 +36,14 @@ body{
     height: 120px;
     display: block; 
     margin: 0px auto;
+    /*이미지 드래그 막기*/
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .color-options{

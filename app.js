@@ -12,6 +12,7 @@ const lineWidth = document.getElementById("line-width");
 const fontSize = document.getElementById("font-size");
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
+const cty = canvas.getContext("2d");
 
 const CANVAS_WIDTH = 800;
 const CANVAS_HEIGHT = 800;
@@ -26,12 +27,11 @@ let isFilling = false;
 
 function onMove(event){
    if(isPainting){
+    ctx.lineTo(event.offsetX, event.offsetY);
     if(isShaping){
-        ctx.lineTo(event.offsetX, event.offsetY);
         ctx.fill();
         return;
     }
-        ctx.lineTo(event.offsetX, event.offsetY);
         ctx.stroke();
         return;
     
@@ -57,6 +57,7 @@ function onFontSizeChange(event){
 function onColorChange(event){
     ctx.strokeStyle = event.target.value;
     ctx.fillStyle = event.target.value;
+
 }
 
 function onColorClick(event){
@@ -73,6 +74,8 @@ function onModeClick(){
         modeBtn.innerText = "⬜ Shape";
     }else {
         isShaping = true;
+        ctx.strokeStyle=color.value;
+        ctx.fillStyle=color.value;
         modeBtn.innerText = "🖌 Draw";
     }
 }
@@ -86,11 +89,14 @@ function onCanvasClick(){
 function onDestroyClick(){
     ctx.fillStyle="white";
     ctx.fillRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
+    isShaping=false;
+    modeBtn.innerText="⬜ Shape";
 }
 
 function onEraserClick(){
     ctx.strokeStyle="white";
     isFilling = false;
+    isShaping=false;
     modeBtn.innerText="⬜ Shape";
 }
 
@@ -117,6 +123,7 @@ function onDoubleClick(event){
         ctx.save();
         ctx.lineWidth=1;
         ctx.font= `${fontSize.value}px ${font.value}`;
+        ctx.fillStyle=color.value;
         ctx.fillText(text,event.offsetX,event.offsetY);
         ctx.restore();
     }
